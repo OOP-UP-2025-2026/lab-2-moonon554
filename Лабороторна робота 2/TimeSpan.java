@@ -1,48 +1,62 @@
 package ua.opnu;
 
 public class TimeSpan {
-    private double hours;
-    private double minutes;
-
-    public TimeSpan() {
-        this.hours = 0;
-        this.minutes = 0;
-    }
+    private int hours;
+    private int minutes;
 
     public TimeSpan(int hours, int minutes) {
-        this.hours = hours;
-        this.minutes = minutes;
-    }
-
-    public TimeSpan(double minutes) {
-        this.hours = 0;
-        this.minutes = minutes;
+        if (hours < 0 || minutes < 0 || minutes >= 60) {
+            this.hours = 0;
+            this.minutes = 0;
+        } else {
+            this.hours = hours;
+            this.minutes = minutes;
+        }
     }
 
     public int getHours() {
-        return (int) hours;
+        return hours;
     }
 
     public int getMinutes() {
-        return (int) minutes;
+        return minutes;
     }
 
-    public double getTotalMinutes() {
+    public int getTotalMinutes() {
         return hours * 60 + minutes;
     }
 
-    public void add(int hours, int minutes) {
-        this.minutes += minutes;
-        this.hours += hours + this.minutes / 60;
-        this.minutes = this.minutes % 60;
+    public double getTotalHours() {
+        return Math.round((hours + minutes / 60.0) * 100.0) / 100.0;
     }
 
-    public void add(TimeSpan other) {
-        add((int) other.hours, (int) other.minutes);
+    public void add(int h, int m) {
+        if (h < 0 || m < 0 || m >= 60) return;
+        int total = getTotalMinutes() + h * 60 + m;
+        hours = total / 60;
+        minutes = total % 60;
+    }
+
+    public void addTimeSpan(TimeSpan other) {
+        add(other.hours, other.minutes);
+    }
+
+    public void subtract(TimeSpan other) {
+        int total = getTotalMinutes() - other.getTotalMinutes();
+        if (total < 0) total = 0;
+        hours = total / 60;
+        minutes = total % 60;
+    }
+
+    public void scale(int factor) {
+        if (factor <= 0) return;
+        int total = getTotalMinutes() * factor;
+        hours = total / 60;
+        minutes = total % 60;
     }
 
     @Override
     public String toString() {
-        return (int) hours + " год " + (int) minutes + " хв";
+        return hours + " год " + minutes + " хв";
     }
 }
