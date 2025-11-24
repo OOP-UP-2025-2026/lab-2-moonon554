@@ -42,3 +42,4 @@ public class TimeSpan {
         return new TimeSpan(h, m);
     }
 }
+
