@@ -1,8 +1,8 @@
 package ua.opnu;
 
 public class TimeSpan {
-    private int hours;
-    private int minutes;
+    private double hours;
+    private double minutes;
 
     public TimeSpan() {
         this.hours = 0;
@@ -10,35 +10,39 @@ public class TimeSpan {
     }
 
     public TimeSpan(int hours, int minutes) {
-        this.hours = hours + minutes / 60;
-        this.minutes = minutes % 60;
+        this.hours = hours;
+        this.minutes = minutes;
     }
 
-    public TimeSpan(int minutes) {
-        this.hours = minutes / 60;
-        this.minutes = minutes % 60;
+    public TimeSpan(double minutes) {
+        this.hours = 0;
+        this.minutes = minutes;
     }
 
     public int getHours() {
-        return hours;
+        return (int) hours;
     }
 
     public int getMinutes() {
-        return minutes;
+        return (int) minutes;
+    }
+
+    public double getTotalMinutes() {
+        return hours * 60 + minutes;
     }
 
     public void add(int hours, int minutes) {
-        int total = this.hours * 60 + this.minutes + hours * 60 + minutes;
-        this.hours = total / 60;
-        this.minutes = total % 60;
+        this.minutes += minutes;
+        this.hours += hours + this.minutes / 60;
+        this.minutes = this.minutes % 60;
     }
 
     public void add(TimeSpan other) {
-        add(other.hours, other.minutes);
+        add((int) other.hours, (int) other.minutes);
     }
 
     @Override
     public String toString() {
-        return hours + " год " + minutes + " хв";
+        return (int) hours + " год " + (int) minutes + " хв";
     }
 }
