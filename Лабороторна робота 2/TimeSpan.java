@@ -1,62 +1,44 @@
-class TimeSpan {
+import java.util.Scanner;
 
+public class TimeSpan {
     private int hours;
     private int minutes;
 
-    TimeSpan(int hours, int minutes) {
-        if (hours < 0 || minutes < 0 || minutes > 59) {
-            this.hours = 0;
-            this.minutes = 0;
-        } else {
-            this.hours = hours;
-            this.minutes = minutes;
-        }
+    public TimeSpan() {
+        this.hours = 0;
+        this.minutes = 0;
     }
 
-    int getHours() {
-        return hours;
+    public TimeSpan(int hours, int minutes) {
+        this.hours = hours + minutes / 60;
+        this.minutes = minutes % 60;
     }
 
-    int getMinutes() {
-        return minutes;
+    public void addHours(int hours) {
+        this.hours += hours;
     }
 
-    void add(int h, int m) {
-        if (h < 0 || m < 0 || m > 59) return;
-
-        int total = hours * 60 + minutes + h * 60 + m;
-        hours = total / 60;
-        minutes = total % 60;
+    public void addMinutes(int minutes) {
+        this.hours += minutes / 60;
+        this.minutes += minutes % 60;
     }
 
-    void addTimeSpan(TimeSpan span) {
-        add(span.hours, span.minutes);
+    public void addTimeSpan(TimeSpan other) {
+        addHours(other.hours);
+        addMinutes(other.minutes);
     }
 
-    double getTotalHours() {
-        return hours + minutes / 60.0;
+    @Override
+    public String toString() {
+        return hours + " год " + minutes + " хв";
     }
 
-    int getTotalMinutes() {
-        return hours * 60 + minutes;
-    }
-
-    void subtract(TimeSpan span) {
-        int t1 = getTotalMinutes();
-        int t2 = span.getTotalMinutes();
-
-        if (t2 > t1) return;
-
-        int result = t1 - t2;
-        hours = result / 60;
-        minutes = result % 60;
-    }
-
-    void scale(int factor) {
-        if (factor <= 0) return;
-
-        int total = getTotalMinutes() * factor;
-        hours = total / 60;
-        minutes = total % 60;
+    // Метод для створення TimeSpan через введення користувача
+    public static TimeSpan createFromInput(Scanner sc) {
+        System.out.print("Введіть години: ");
+        int h = Integer.parseInt(sc.nextLine());
+        System.out.print("Введіть хвилини: ");
+        int m = Integer.parseInt(sc.nextLine());
+        return new TimeSpan(h, m);
     }
 }
