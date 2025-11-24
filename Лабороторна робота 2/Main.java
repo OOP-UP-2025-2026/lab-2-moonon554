@@ -1,42 +1,44 @@
+package ua.opnu;
+
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("=== ЛАБОРАТОРНА РОБОТА 2 ===");
+        // BankAccount
+        System.out.print("Номер рахунку: ");
+        String accNum = sc.nextLine();
+        System.out.print("Власник рахунку: ");
+        String owner = sc.nextLine();
+        System.out.print("Баланс: ");
+        double balance = Double.parseDouble(sc.nextLine());
+        BankAccount account = new BankAccount(accNum, owner, balance);
 
-        // --- ЧАСТИНА 1: TimeSpan ---
-        System.out.println("\n[1] Тестування TimeSpan");
-        TimeSpan t1 = TimeSpan.createFromInput(sc);
-        
-        System.out.println("Створено: " + t1);
-        
-        System.out.println("Додаємо хвилини...");
-        System.out.print("Скільки хвилин додати? ");
-        try {
-            int mins = Integer.parseInt(sc.nextLine());
-            t1.addMinutes(mins);
-            System.out.println("Новий час: " + t1);
-        } catch (Exception e) {
-            System.out.println("Некоректне число.");
-        }
+        System.out.print("Сума депозиту: ");
+        double deposit = Double.parseDouble(sc.nextLine());
+        account.deposit(deposit);
 
-        // --- ЧАСТИНА 2: BankAccount ---
-        System.out.println("\n[2] Тестування BankAccount");
-        BankAccount acc = BankAccount.createFromInput(sc);
-        System.out.println(acc);
+        System.out.print("Сума зняття: ");
+        double withdraw = Double.parseDouble(sc.nextLine());
+        boolean success = account.withdraw(withdraw);
+        System.out.println("Операція зняття: " + success);
+        System.out.println("Баланс: " + account.getBalance());
 
-        System.out.print("Введіть суму для зняття: ");
-        try {
-            double amount = Double.parseDouble(sc.nextLine());
-            acc.withdraw(amount);
-        } catch (Exception e) {
-            System.out.println("Помилка введення.");
-        }
+        // TimeSpan
+        System.out.print("Години: ");
+        int h = Integer.parseInt(sc.nextLine());
+        System.out.print("Хвилини: ");
+        int m = Integer.parseInt(sc.nextLine());
+        TimeSpan ts1 = new TimeSpan(h, m);
 
-        System.out.println("Фінальний стан: " + acc);
-        
-        sc.close();
+        System.out.print("Додаткові години: ");
+        int h2 = Integer.parseInt(sc.nextLine());
+        System.out.print("Додаткові хвилини: ");
+        int m2 = Integer.parseInt(sc.nextLine());
+        TimeSpan ts2 = new TimeSpan(h2, m2);
+
+        ts1.add(ts2);
+        System.out.println("Сумарний час: " + ts1);
     }
 }
