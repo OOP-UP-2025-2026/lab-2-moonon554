@@ -1,50 +1,36 @@
 package ua.opnu;
 
 public class BankAccount {
-    private double balance;
-    private double interestRate;
+    public double balance;
+    public double transactionFee;
 
     public BankAccount() {
-        this.balance = 0.0;
-        this.interestRate = 0.0;
+        this.balance = 0;
+        this.transactionFee = 0;
     }
 
-    public BankAccount(double balance, double interestRate) {
+    public BankAccount(double balance, double transactionFee) {
         this.balance = balance;
-        this.interestRate = interestRate;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public double getInterestRate() {
-        return interestRate;
+        this.transactionFee = transactionFee;
     }
 
     public void deposit(double amount) {
-        if(amount >= 0)
-            balance += amount;
+        if (amount > 0) balance += amount;
     }
 
     public boolean withdraw(double amount) {
-        if(amount >= 0 && amount <= balance) {
-            balance -= amount;
-            return true;
-        }
-        return false;
+        if (amount <= 0) return false;
+        double total = amount + transactionFee;
+        if (total > balance) return false;
+        balance -= total;
+        return true;
     }
 
-    public void addInterest() {
-        balance += balance * interestRate / 100.0;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
-    public void setInterestRate(double interestRate) {
-        this.interestRate = interestRate;
+    public boolean transfer(BankAccount other, double amount) {
+        if (amount <= 0) return false;
+        if (!withdraw(amount)) return false;
+        other.deposit(amount);
+        return true;
     }
 }
 
